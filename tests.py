@@ -5,6 +5,9 @@ import subprocess
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import text_to_be_present_in_element
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+
 
 class QuickTest(unittest.TestCase):
     def setUp(self):
@@ -12,8 +15,14 @@ class QuickTest(unittest.TestCase):
             ['python', '-m', 'http.server', '8101']
         )
         self.addCleanup(server.kill)
-        self.driver = webdriver.Firefox()
+        # capabilities = DesiredCapabilities.FIREFOX
+        # capabilities['marionette'] = True
+        # capabilities['binary'] = '/home/harry/Downloads/firefox46/firefox'
+        self.driver = webdriver.Firefox(
+            firefox_binary=FirefoxBinary('/home/harry/Downloads/firefox46/firefox')
+        )
         self.addCleanup(self.driver.quit)
+        self.driver.implicitly_wait(1)
 
 
     def test_clicking_around_fast(self):
